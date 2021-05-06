@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "4.3.0",
+    "@axe-core/react": "^4.1.1",
     "@beam-australia/react-env": "2.1.2",
     "@craco/craco": "6.0.0",
     "@date-io/dayjs": "1.x",
