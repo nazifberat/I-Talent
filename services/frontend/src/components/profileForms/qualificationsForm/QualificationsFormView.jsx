@@ -49,6 +49,7 @@ const QualificationsFormView = ({
   const [form] = Form.useForm();
   const [fieldsChanged, setFieldsChanged] = useState(false);
   const [savedValues, setSavedValues] = useState(null);
+  const [fieldsError, setFieldsError] = useState(null);
   const [selectedTab, setSelectedTab] = useState(1);
   const [tabErrorsBool, setTabErrorsBool] = useState({});
   const dispatch = useDispatch();
@@ -129,6 +130,9 @@ const QualificationsFormView = ({
     }
 
     setFieldsChanged(!isEqual(formValues, dbValues));
+    setTimeout(() => {
+      setFieldsError(form.getFieldsError());
+    }, 100);
   };
 
   /*
@@ -394,7 +398,7 @@ const QualificationsFormView = ({
                   <Form.List name="educations">
                     {(fields, { add, remove }) => (
                       <>
-                        {fields.map((field) => (
+                        {fields.map((field, index) => (
                           <EducationForm
                             key={field.fieldKey}
                             form={form}
@@ -403,6 +407,8 @@ const QualificationsFormView = ({
                             diplomaOptions={options.diplomas}
                             schoolOptions={options.schools}
                             attachmentNames={options.attachmentNamesEdu}
+                            errors={fieldsError}
+                            index={index}
                           />
                         ))}
                         <Form.Item>
@@ -453,7 +459,7 @@ const QualificationsFormView = ({
                     {(fields, { add, remove }) => (
                       <div>
                         {/* generate education form for each education item */}
-                        {fields.map((field) => (
+                        {fields.map((field, index) => (
                           <ExperienceForm
                             key={field.fieldKey}
                             form={form}
@@ -461,6 +467,8 @@ const QualificationsFormView = ({
                             removeElement={remove}
                             attachmentNames={options.attachmentNamesExp}
                             checkIfFormValuesChanged={checkIfFormValuesChanged}
+                            errors={fieldsError}
+                            index={index}
                           />
                         ))}
                         <Form.Item>

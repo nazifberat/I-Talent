@@ -10,12 +10,14 @@ const QualifiedPoolsForm = ({
   removeElement,
   savedQualifiedPools,
   classificationOptions,
+  errors,
 }) => (
   <QualifiedPoolsFormView
     fieldElement={fieldElement}
     removeElement={removeElement}
     savedQualifiedPools={savedQualifiedPools}
     classificationOptions={classificationOptions}
+    errors={errors}
   />
 );
 
@@ -32,6 +34,7 @@ QualifiedPoolsForm.propTypes = {
     })
   ).isRequired,
   classificationOptions: KeyTitleOptionsPropType.isRequired,
+  errors: PropTypes.arrayOf(PropTypes.bool).isRequired,
 };
 
 export default QualifiedPoolsForm;

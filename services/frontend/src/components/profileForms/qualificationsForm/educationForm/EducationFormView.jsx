@@ -48,6 +48,8 @@ const EducationFormView = ({
   schoolOptions,
   intl,
   attachmentNames,
+  errors,
+  index,
 }) => {
   const Rules = {
     required: {
@@ -87,6 +89,39 @@ const EducationFormView = ({
   const [disabledStartDates, changeDisabledStart] = useState(
     form.getFieldValue(["educations", fieldElement.fieldKey, "endDate"])
   );
+
+  const isEqualArray = (a1, a2) => {
+    if (a1.length !== a2.length) {
+      return false;
+    }
+    for (let i = 0; i < a1.length; i += 1) {
+      if (a1[i] !== a2[i]) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const getErrors = (id) => {
+    const errorName = ["educations", index, ...id];
+    if (errors) {
+      for (let i = 0; i < errors.length; i += 1) {
+        const error = errors[i];
+        if (isEqualArray(error.name, errorName)) {
+          return error.errors;
+        }
+      }
+    }
+
+    return [];
+  };
+
+  const isValidField = (fieldErrors) => {
+    if (fieldErrors) {
+      return fieldErrors.length > 0;
+    }
+    return false;
+  };
 
   return (
     <div className="education-formItem">
@@ -129,6 +164,7 @@ const EducationFormView = ({
               placeholder={<FormattedMessage id="search" />}
               allowClear
               filterOption={filterOption}
+              aria-invalid={isValidField(getErrors(["diplomaId"]))}
             >
               {diplomaOptions.map((value) => (
                 <Option key={value.id}>{value.description}</Option>
@@ -150,6 +186,7 @@ const EducationFormView = ({
               placeholder={<FormattedMessage id="search" />}
               allowClear
               filterOption={filterOption}
+              aria-invalid={isValidField(getErrors(["schoolId"]))}
             >
               {schoolOptions.map((value) => (
                 <Option key={value.id}>{value.name}</Option>
@@ -308,12 +345,20 @@ const EducationFormView = ({
             >
               {(fields, { add, remove }) => (
                 <div>
-                  {fields.map((field) => (
+                  {fields.map((field, itemNum) => (
                     <LinkAttachment
                       key={field.fieldKey}
                       fieldElement={field}
                       removeElement={remove}
                       nameOptions={attachmentNames}
+                      errors={[
+                        isValidField(
+                          getErrors(["attachmentLinks", itemNum, "nameId"])
+                        ),
+                        isValidField(
+                          getErrors(["attachmentLinks", itemNum, "url"])
+                        ),
+                      ]}
                     />
                   ))}
                   <Form.Item>
@@ -337,14 +382,14 @@ const EducationFormView = ({
   );
 };
 
-DatePickerField.propTypes = {
-  onChange: PropTypes.func,
-  placeholderText: PropTypes.string.isRequired,
-  defaultDate: PropTypes.instanceOf(Object),
-  viewOptions: PropTypes.arrayOf(String),
-  disableWhen: PropTypes.instanceOf(Object),
-  formatDate: PropTypes.string.isRequired,
-};
+// DatePickerField.propTypes = {
+//   onChange: PropTypes.func,
+//   placeholderText: PropTypes.string.isRequired,
+//   defaultDate: PropTypes.instanceOf(Object),
+//   viewOptions: PropTypes.arrayOf(String),
+//   disableWhen: PropTypes.instanceOf(Object),
+//   formatDate: PropTypes.string.isRequired,
+// };
 
 EducationFormView.propTypes = {
   form: FormInstancePropType.isRequired,
@@ -354,6 +399,8 @@ EducationFormView.propTypes = {
   diplomaOptions: KeyTitleOptionsPropType,
   intl: IntlPropType,
   attachmentNames: KeyNameOptionsPropType.isRequired,
+  errors: PropTypes.arrayOf(PropTypes.object).isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 EducationFormView.defaultProps = {

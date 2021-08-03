@@ -14,6 +14,8 @@ const EducationForm = ({
   diplomaOptions,
   schoolOptions,
   attachmentNames,
+  errors,
+  index,
 }) => (
   <EducationFormView
     form={form}
@@ -22,6 +24,8 @@ const EducationForm = ({
     diplomaOptions={diplomaOptions}
     schoolOptions={schoolOptions}
     attachmentNames={attachmentNames}
+    errors={errors}
+    index={index}
   />
 );
 
@@ -32,6 +36,8 @@ EducationForm.propTypes = {
   diplomaOptions: KeyTitleOptionsPropType.isRequired,
   schoolOptions: KeyTitleOptionsPropType.isRequired,
   attachmentNames: KeyNameOptionsPropType.isRequired,
+  errors: PropTypes.arrayOf(PropTypes.object).isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 export default EducationForm;

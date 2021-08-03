@@ -63,6 +63,7 @@ const TalentFormView = ({
   const [selectedSkills, setSelectedSkills] = useState(false);
   const [fieldsChanged, setFieldsChanged] = useState(false);
   const [savedValues, setSavedValues] = useState(null);
+  const [fieldsError, setFieldsError] = useState(null);
   const [loadedData, setLoadedData] = useState(false);
   const [selectedTab, setSelectedTab] = useState(1);
   const [tabErrorsBool, setTabErrorsBool] = useState([]);
@@ -182,6 +183,9 @@ const TalentFormView = ({
 
   const updateIfFormValuesChanged = () => {
     setFieldsChanged(checkIfFormValuesChanged());
+    setTimeout(() => {
+      setFieldsError(form.getFieldsError());
+    }, 100);
   };
 
   /*
@@ -482,6 +486,17 @@ const TalentFormView = ({
     setSelectedTab(getTabValue(activeTab));
   };
 
+  /**
+   * Will check to see if field at fieldNumber
+   * valid
+   */
+  const isValidField = (fieldNumber) => {
+    if (fieldsError && fieldsError[fieldNumber]) {
+      return fieldsError[fieldNumber].errors.length > 0;
+    }
+    return false;
+  };
+
   /*
    * Get mentorship form
    *
@@ -514,6 +529,7 @@ const TalentFormView = ({
                   showSearch
                   maxTagCount={15}
                   disabled={!selectedSkills.length > 0}
+                  aria-invalid={isValidField(1)}
                 />
               </Form.Item>
             </Col>

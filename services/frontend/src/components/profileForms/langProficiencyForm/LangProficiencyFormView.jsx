@@ -53,6 +53,7 @@ const LangProficiencyFormView = ({
   const [form] = Form.useForm();
   const [displaySecondLangForm, setDisplaySecondLangForm] = useState(false);
   const [fieldsChanged, setFieldsChanged] = useState(false);
+  const [fieldsError, setFieldsError] = useState(null);
   const [savedValues, setSavedValues] = useState(null);
   const [loadedData, setLoadedData] = useState(false);
   const dispatch = useDispatch();
@@ -180,6 +181,9 @@ const LangProficiencyFormView = ({
 
   const updateIfFormValuesChanged = () => {
     setFieldsChanged(checkIfFormValuesChanged());
+    setTimeout(() => {
+      setFieldsError(form.getFieldsError());
+    }, 100);
   };
 
   /*
@@ -270,7 +274,18 @@ const LangProficiencyFormView = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [displaySecondLangForm]);
 
-  const getSecondLangRows = (name, label, statusName) => (
+  /**
+   * Will check to see if field at fieldNumber
+   * valid
+   */
+  const isValidField = (fieldNumber) => {
+    if (fieldsError) {
+      return fieldsError[fieldNumber].errors.length > 0;
+    }
+    return false;
+  };
+
+  const getSecondLangRows = (name, label, statusName, index) => (
     <Row gutter={24} style={{ marginTop: "10px" }}>
       <Col className="gutter-row" xs={24} md={24} lg={12} xl={12}>
         <Form.Item
@@ -284,6 +299,7 @@ const LangProficiencyFormView = ({
             placeholder={<FormattedMessage id="search" />}
             allowClear
             filterOption={filterOption}
+            aria-invalid={isValidField(index * 2 + 1)}
           >
             {proficiencyOptions.map((value) => (
               <Option key={value.key}>{value.text}</Option>
@@ -303,6 +319,7 @@ const LangProficiencyFormView = ({
             placeholder={<FormattedMessage id="search" />}
             allowClear
             filterOption={filterOption}
+            aria-invalid={isValidField(index * 2 + 2)}
           >
             {statusOptions.map((value) => (
               <Option key={value.key}>{value.text}</Option>
@@ -324,19 +341,22 @@ const LangProficiencyFormView = ({
           {getSecondLangRows(
             "readingProficiency",
             "secondary.reading.proficiency",
-            "secondaryReadingStatus"
+            "secondaryReadingStatus",
+            0
           )}
           {/* Writing Proficiency */}
           {getSecondLangRows(
             "writingProficiency",
             "secondary.writing.proficiency",
-            "secondaryWritingStatus"
+            "secondaryWritingStatus",
+            1
           )}
           {/* Oral Proficiency */}
           {getSecondLangRows(
             "oralProficiency",
             "secondary.oral.proficiency",
-            "secondaryOralStatus"
+            "secondaryOralStatus",
+            2
           )}
         </>
       );

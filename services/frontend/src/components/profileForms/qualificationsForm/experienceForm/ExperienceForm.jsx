@@ -19,6 +19,8 @@ const ExperienceForm = ({
   removeElement,
   checkIfFormValuesChanged,
   attachmentNames,
+  errors,
+  index,
 }) => (
   <ExperienceFormView
     form={form}
@@ -26,6 +28,8 @@ const ExperienceForm = ({
     removeElement={removeElement}
     checkIfFormValuesChanged={checkIfFormValuesChanged}
     attachmentNames={attachmentNames}
+    errors={errors}
+    index={index}
   />
 );
 
@@ -35,6 +39,8 @@ ExperienceForm.propTypes = {
   removeElement: PropTypes.func.isRequired,
   checkIfFormValuesChanged: PropTypes.func.isRequired,
   attachmentNames: KeyNameOptionsPropType.isRequired,
+  errors: PropTypes.arrayOf(PropTypes.object).isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 export default ExperienceForm;

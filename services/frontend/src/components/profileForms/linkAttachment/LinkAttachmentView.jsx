@@ -21,7 +21,12 @@ const Rules = {
   },
 };
 
-const LinkAttachmentView = ({ fieldElement, removeElement, nameOptions }) => {
+const LinkAttachmentView = ({
+  fieldElement,
+  removeElement,
+  nameOptions,
+  errors,
+}) => {
   const intl = useIntl();
   return (
     <Row span={24} gutter={12} className="my-1">
@@ -67,6 +72,7 @@ const LinkAttachmentView = ({ fieldElement, removeElement, nameOptions }) => {
             } ${intl.formatMessage({
               id: "type",
             })} `}
+            aria-invalid={errors[0]}
           >
             {nameOptions.map((value) => (
               <Option key={value.id}>{value.name}</Option>
@@ -92,6 +98,7 @@ const LinkAttachmentView = ({ fieldElement, removeElement, nameOptions }) => {
             } ${intl.formatMessage({
               id: "link.to.document",
             })} `}
+            aria-invalid={errors[1]}
           />
         </Form.Item>
       </Col>
@@ -103,6 +110,7 @@ LinkAttachmentView.propTypes = {
   fieldElement: FieldPropType.isRequired,
   removeElement: PropTypes.func.isRequired,
   nameOptions: KeyNameOptionsPropType.isRequired,
+  errors: PropTypes.arrayOf(PropTypes.bool).isRequired,
 };
 
 export default LinkAttachmentView;

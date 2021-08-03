@@ -41,6 +41,8 @@ const ExperienceFormView = ({
   removeElement,
   attachmentNames,
   intl,
+  errors,
+  index,
 }) => {
   const Rules = {
     required: {
@@ -85,6 +87,39 @@ const ExperienceFormView = ({
     form.getFieldValue(["experiences", fieldElement.fieldKey, "endDate"])
   );
 
+  const isEqualArray = (a1, a2) => {
+    if (a1.length !== a2.length) {
+      return false;
+    }
+    for (let i = 0; i < a1.length; i += 1) {
+      if (a1[i] !== a2[i]) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const getErrors = (id) => {
+    const errorName = ["experiences", index, ...id];
+    if (errors) {
+      for (let i = 0; i < errors.length; i += 1) {
+        const error = errors[i];
+        if (isEqualArray(error.name, errorName)) {
+          return error.errors;
+        }
+      }
+    }
+
+    return [];
+  };
+
+  const isValidField = (fieldErrors) => {
+    if (fieldErrors) {
+      return fieldErrors.length > 0;
+    }
+    return false;
+  };
+
   return (
     <div className="experience-formItem">
       <Row gutter={24} className="gutter-row titleRow">
@@ -121,7 +156,7 @@ const ExperienceFormView = ({
             label={<FormattedMessage id="job.title" />}
             rules={[Rules.required, Rules.maxChar60]}
           >
-            <Input />
+            <Input aria-invalid={isValidField(getErrors(["jobTitle"]))} />
           </Form.Item>
         </Col>
 
@@ -308,13 +343,21 @@ const ExperienceFormView = ({
             >
               {(fields, { add, remove }) => (
                 <div>
-                  {fields.map((field) => (
+                  {fields.map((field, itemNum) => (
                     <LinkAttachment
                       key={field.fieldKey}
                       form={form}
                       fieldElement={field}
                       removeElement={remove}
                       nameOptions={attachmentNames}
+                      errors={[
+                        isValidField(
+                          getErrors(["attachmentLinks", itemNum, "nameId"])
+                        ),
+                        isValidField(
+                          getErrors(["attachmentLinks", itemNum, "url"])
+                        ),
+                      ]}
                     />
                   ))}
                   <Form.Item>
@@ -346,6 +389,8 @@ ExperienceFormView.propTypes = {
   removeElement: PropTypes.func.isRequired,
   intl: IntlPropType,
   attachmentNames: KeyNameOptionsPropType.isRequired,
+  errors: PropTypes.arrayOf(PropTypes.object).isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 ExperienceFormView.defaultProps = {

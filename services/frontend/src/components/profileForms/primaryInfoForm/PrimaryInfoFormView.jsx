@@ -58,6 +58,7 @@ const PrimaryInfoFormView = ({
   const intl = useIntl();
   const [form] = Form.useForm();
   const [fieldsChanged, setFieldsChanged] = useState(false);
+  const [fieldsError, setFieldsError] = useState(null);
   const [savedValues, setSavedValues] = useState(null);
   const [gedsModalVisible, setGedsModalVisible] = useState(false);
 
@@ -192,6 +193,9 @@ const PrimaryInfoFormView = ({
     );
 
     setFieldsChanged(!isEqual(formValues, dbValues));
+    setTimeout(() => {
+      setFieldsError(form.getFieldsError());
+    }, 100);
   };
 
   /**
@@ -326,6 +330,17 @@ const PrimaryInfoFormView = ({
     checkIfFormValuesChanged();
   };
 
+  /**
+   * Will check to see if field at fieldNumber
+   * valid
+   */
+  const isValidField = (fieldNumber) => {
+    if (fieldsError && fieldsError[fieldNumber]) {
+      return fieldsError[fieldNumber].errors.length > 0;
+    }
+    return false;
+  };
+
   /** **********************************
    ********* Render Component *********
    *********************************** */
@@ -392,7 +407,7 @@ const PrimaryInfoFormView = ({
                 label={<FormattedMessage id="first.name" />}
                 rules={[Rules.required, Rules.maxChar50, Rules.nameFormat]}
               >
-                <Input aria-required="true" />
+                <Input aria-required="true" aria-invalid={isValidField(0)} />
               </Form.Item>
             </Col>
 
@@ -402,7 +417,7 @@ const PrimaryInfoFormView = ({
                 label={<FormattedMessage id="last.name" />}
                 rules={[Rules.required, Rules.maxChar50, Rules.nameFormat]}
               >
-                <Input aria-required="true" />
+                <Input aria-required="true" aria-invalid={isValidField(1)} />
               </Form.Item>
             </Col>
           </Row>
@@ -438,7 +453,7 @@ const PrimaryInfoFormView = ({
                 }
                 rules={[Rules.maxChar50]}
               >
-                <Input disabled />
+                <Input disabled aria-invalid={isValidField(2)} />
               </Form.Item>
             </Col>
             <Col className="gutter-row" xs={24} md={12} lg={12} xl={12}>
@@ -447,7 +462,7 @@ const PrimaryInfoFormView = ({
                 label={<FormattedMessage id="email" />}
                 rules={[Rules.emailFormat, Rules.maxChar50]}
               >
-                <Input disabled />
+                <Input disabled aria-invalid={isValidField(3)} />
               </Form.Item>
             </Col>
           </Row>
@@ -464,7 +479,11 @@ const PrimaryInfoFormView = ({
                 label={<FormattedMessage id="pri" />}
                 rules={[Rules.required, Rules.priFormat]}
               >
-                <Input aria-describedby="pri-extra-info" aria-required="true" />
+                <Input
+                  aria-describedby="pri-extra-info"
+                  aria-required="true"
+                  aria-invalid={isValidField(4)}
+                />
               </Form.Item>
             </Col>
             <Col className="gutter-row" xs={24} md={12} lg={12} xl={12}>
@@ -479,6 +498,7 @@ const PrimaryInfoFormView = ({
                   allowClear
                   filterOption={filterOption}
                   aria-required="true"
+                  aria-invalid={isValidField(5)}
                 >
                   {locationOptions.map((value) => (
                     <Option key={value.id}>
@@ -498,7 +518,7 @@ const PrimaryInfoFormView = ({
                 label={<FormattedMessage id="profile.telephone" />}
                 rules={Rules.telephoneFormat}
               >
-                <Input />
+                <Input aria-invalid={isValidField(6)} />
               </Form.Item>
             </Col>
             <Col className="gutter-row" xs={24} md={12} lg={12} xl={12}>
@@ -507,7 +527,7 @@ const PrimaryInfoFormView = ({
                 label={<FormattedMessage id="work.cellphone" />}
                 rules={Rules.telephoneFormat}
               >
-                <Input />
+                <Input aria-invalid={isValidField(7)} />
               </Form.Item>
             </Col>
           </Row>
@@ -523,6 +543,7 @@ const PrimaryInfoFormView = ({
                   mode="tags"
                   style={{ width: "100%" }}
                   notFoundContent={<FormattedMessage id="press.enter.to.add" />}
+                  aria-invalid={isValidField(8)}
                 />
               </Form.Item>
             </Col>
@@ -554,6 +575,7 @@ const PrimaryInfoFormView = ({
                   })} https://gcconnex.gc.ca/profile/`}
                   addonBefore="https://gcconnex.gc.ca/profile/"
                   placeholder={intl.formatMessage({ id: "username" })}
+                  aria-invalid={isValidField(9)}
                 />
               </Form.Item>
             </Col>
@@ -570,6 +592,7 @@ const PrimaryInfoFormView = ({
                   addonBefore="https://linkedin.com/in/"
                   aria-describedby="linkedin-field-info"
                   placeholder={intl.formatMessage({ id: "username" })}
+                  aria-invalid={isValidField(10)}
                 />
               </Form.Item>
             </Col>
@@ -586,6 +609,7 @@ const PrimaryInfoFormView = ({
                   addonBefore="https://github.com/"
                   aria-describedby="github-field-info"
                   placeholder={intl.formatMessage({ id: "username" })}
+                  aria-invalid={isValidField(11)}
                 />
               </Form.Item>
             </Col>
@@ -614,6 +638,7 @@ const PrimaryInfoFormView = ({
                   aria-label={intl.formatMessage({
                     id: "employment.equity.groups",
                   })}
+                  aria-invalid={isValidField(12)}
                 >
                   {employmentEquityOptions.map(({ key, text }) => (
                     <Option key={key}>{text}</Option>

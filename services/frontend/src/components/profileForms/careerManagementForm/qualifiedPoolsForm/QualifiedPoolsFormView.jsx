@@ -36,6 +36,7 @@ const QualifiedPoolsFormView = ({
   removeElement,
   savedQualifiedPools,
   classificationOptions,
+  errors,
 }) => {
   const intl = useIntl();
 
@@ -91,6 +92,7 @@ const QualifiedPoolsFormView = ({
               placeholder={<FormattedMessage id="search" />}
               allowClear
               filterOption={filterOption}
+              aria-invalid={errors[0]}
             >
               {classificationOptions.map((value) => (
                 <Option key={value.id}>{value.name}</Option>
@@ -114,6 +116,7 @@ const QualifiedPoolsFormView = ({
               placeholder={intl.formatMessage({
                 id: "job.title.department.placeholder",
               })}
+              aria-invalid={errors[1]}
             />
           </Form.Item>
         </Col>
@@ -129,7 +132,7 @@ const QualifiedPoolsFormView = ({
               savedQualifiedPools[fieldElement.fieldKey].description
             }
           >
-            <Input />
+            <Input aria-invalid={errors[2]} />
           </Form.Item>
         </Col>
         <Col className="gutter-row" xs={24} md={12} lg={12} xl={12}>
@@ -163,6 +166,7 @@ QualifiedPoolsFormView.propTypes = {
     })
   ).isRequired,
   classificationOptions: KeyTitleOptionsPropType.isRequired,
+  errors: PropTypes.arrayOf(PropTypes.bool).isRequired,
 };
 
 export default injectIntl(QualifiedPoolsFormView);

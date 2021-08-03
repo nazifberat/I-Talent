@@ -77,6 +77,7 @@ const CareerManagementFormView = ({
   const intl = useIntl();
   const [fieldsChanged, setFieldsChanged] = useState(false);
   const [savedValues, setSavedValues] = useState(null);
+  const [fieldsError, setFieldsError] = useState(null);
   const [selectedTab, setSelectedTab] = useState(1);
   const [tabErrorsBool, setTabErrorsBool] = useState({});
   const axios = useAxios();
@@ -189,6 +190,9 @@ const CareerManagementFormView = ({
     );
 
     setFieldsChanged(!isEqual(formValues, dbValues));
+    setTimeout(() => {
+      setFieldsError(form.getFieldsError());
+    }, 100);
   };
 
   /*
@@ -386,6 +390,13 @@ const CareerManagementFormView = ({
     setSelectedTab(getTabValue(currentTab));
   }, [currentTab, getTabValue]);
 
+  const isValidField = (fieldNumber) => {
+    if (fieldsError && fieldsError[fieldNumber]) {
+      return fieldsError[fieldNumber].errors.length > 0;
+    }
+    return false;
+  };
+
   /** **********************************
    ********* Render Component *********
    *********************************** */
@@ -481,6 +492,7 @@ const CareerManagementFormView = ({
                       treeNodeFilterProp="title"
                       showSearch
                       maxTagCount={15}
+                      aria-invalid={isValidField(0)}
                     />
                   </Form.Item>
                 </Col>
@@ -492,12 +504,20 @@ const CareerManagementFormView = ({
                     <Form.List name="developmentalGoalsAttachments">
                       {(fields, { add, remove }) => (
                         <div>
-                          {fields.map((field) => (
+                          {fields.map((field, index) => (
                             <LinkAttachment
                               key={field.fieldKey}
                               fieldElement={field}
                               removeElement={remove}
                               nameOptions={attachmentOptions}
+                              errors={[
+                                fieldsError
+                                  ? isValidField((index + 1) * 2)
+                                  : false,
+                                fieldsError
+                                  ? isValidField((index + 1) * 2 + 1)
+                                  : false,
+                              ]}
                             />
                           ))}
                           <Form.Item>
@@ -553,13 +573,18 @@ const CareerManagementFormView = ({
                   <Form.List name="qualifiedPools">
                     {(fields, { add, remove }) => (
                       <>
-                        {fields.map((field) => (
+                        {fields.map((field, index) => (
                           <QualifiedPoolsForm
                             key={field.fieldKey}
                             fieldElement={field}
                             removeElement={remove}
                             savedQualifiedPools={savedQualifiedPools}
                             classificationOptions={classificationOptions}
+                            errors={[
+                              fieldsError ? isValidField(4 * index + 3) : false,
+                              fieldsError ? isValidField(4 * index + 4) : false,
+                              fieldsError ? isValidField(4 * index + 5) : false,
+                            ]}
                           />
                         ))}
                         <Form.Item>
