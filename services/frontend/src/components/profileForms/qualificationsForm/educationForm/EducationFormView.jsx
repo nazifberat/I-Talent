@@ -399,7 +399,7 @@ EducationFormView.propTypes = {
   diplomaOptions: KeyTitleOptionsPropType,
   intl: IntlPropType,
   attachmentNames: KeyNameOptionsPropType.isRequired,
-  errors: PropTypes.arrayOf(PropTypes.object).isRequired,
+  errors: PropTypes.arrayOf(PropTypes.object),
   index: PropTypes.number.isRequired,
 };
 
@@ -407,6 +407,7 @@ EducationFormView.defaultProps = {
   schoolOptions: undefined,
   diplomaOptions: undefined,
   intl: undefined,
+  errors: null,
 };
 
 export default injectIntl(EducationFormView);

@@ -36,8 +36,12 @@ EducationForm.propTypes = {
   diplomaOptions: KeyTitleOptionsPropType.isRequired,
   schoolOptions: KeyTitleOptionsPropType.isRequired,
   attachmentNames: KeyNameOptionsPropType.isRequired,
-  errors: PropTypes.arrayOf(PropTypes.object).isRequired,
+  errors: PropTypes.arrayOf(PropTypes.object),
   index: PropTypes.number.isRequired,
+};
+
+EducationForm.defaultProps = {
+  errors: null,
 };
 
 export default EducationForm;

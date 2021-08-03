@@ -39,8 +39,12 @@ ExperienceForm.propTypes = {
   removeElement: PropTypes.func.isRequired,
   checkIfFormValuesChanged: PropTypes.func.isRequired,
   attachmentNames: KeyNameOptionsPropType.isRequired,
-  errors: PropTypes.arrayOf(PropTypes.object).isRequired,
+  errors: PropTypes.arrayOf(PropTypes.object),
   index: PropTypes.number.isRequired,
+};
+
+ExperienceForm.defaultProps = {
+  errors: null,
 };
 
 export default ExperienceForm;

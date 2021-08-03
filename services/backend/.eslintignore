@@ -1,2 +1,3 @@
 client
 migrations
+tests/coverage

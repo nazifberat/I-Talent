@@ -389,12 +389,13 @@ ExperienceFormView.propTypes = {
   removeElement: PropTypes.func.isRequired,
   intl: IntlPropType,
   attachmentNames: KeyNameOptionsPropType.isRequired,
-  errors: PropTypes.arrayOf(PropTypes.object).isRequired,
+  errors: PropTypes.arrayOf(PropTypes.object),
   index: PropTypes.number.isRequired,
 };
 
 ExperienceFormView.defaultProps = {
   intl: undefined,
+  errors: null,
 };
 
 export default injectIntl(ExperienceFormView);
