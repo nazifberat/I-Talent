@@ -9,17 +9,26 @@ async function getBranches(request, response) {
       language,
     },
     select: {
-      id: true,
       branch: true,
+      employmentInfo: {
+        select: {
+          id: true,
+        },
+      },
     },
     orderBy: {
       branch: "asc",
     },
   });
 
-  const branches = _.sortBy(_.uniq(branchesQuery.map((i) => i.branch)));
+  const branchesQueryUniq = _.sortedUniqBy(branchesQuery, "branch");
 
-  response.status(200).json(branches);
+  const responseData = branchesQueryUniq.map((branch) => ({
+    value: branch.employmentInfo.id,
+    label: branch.branch,
+  }));
+
+  response.status(200).json(responseData);
 }
 
 module.exports = {

@@ -36,9 +36,14 @@ const OfficialLanguage = ({ data, editableCardBool }) => {
       nextData.titleId = `secondary.${profType.toLowerCase()}.proficiency`;
 
       if (info) {
-        nextData.status = intl.formatMessage({
-          id: info.status.toLowerCase(),
-        });
+        if (info.status === "NA") {
+          nextData.status = intl.formatMessage({ id: "grade.not.applicable" });
+        } else {
+          nextData.status = intl.formatMessage({
+            id: info.status.toLowerCase(),
+          });
+        }
+
         if (info.level === "NA") {
           nextData.level = intl.formatMessage({ id: "grade.not.applicable" });
         } else {
@@ -54,7 +59,7 @@ const OfficialLanguage = ({ data, editableCardBool }) => {
 
   return (
     <ProfileCards
-      titleId="official.languages"
+      titleString={intl.formatMessage({ id: "official.languages" })}
       cardName="officialLanguage"
       id="card-profile-official-language"
       editUrl="/profile/edit/language-proficiency"

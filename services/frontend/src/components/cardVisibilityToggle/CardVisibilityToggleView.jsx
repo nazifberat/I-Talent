@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { Select, notification } from "antd";
+import { notification } from "antd";
 import {
   EyeInvisibleOutlined,
   TeamOutlined,
@@ -13,10 +13,14 @@ import "./CardVisibilityToggleView.less";
 import AlertDialog from "../modal/AlertDialog";
 import useAxios from "../../utils/useAxios";
 import handleError from "../../functions/handleError";
+import CustomDropdown from "../formItems/CustomDropdown";
 
-const { Option } = Select;
-
-const CardVisibilityToggleView = ({ cardName, type, visibleCards }) => {
+const CardVisibilityToggleView = ({
+  cardName,
+  type,
+  visibleCards,
+  ariaLabel,
+}) => {
   const axios = useAxios();
   const intl = useIntl();
   const history = useHistory();
@@ -104,38 +108,37 @@ const CardVisibilityToggleView = ({ cardName, type, visibleCards }) => {
     getCardStatus();
   }, [getCardStatus]);
 
+  const generateOptions = () => [
+    {
+      value: "PUBLIC",
+      label: intl.formatMessage({ id: "visibility.card.public" }),
+      icon: <EyeOutlined className="mr-1" aria-hidden="true" />,
+    },
+    {
+      value: "CONNECTIONS",
+      label: intl.formatMessage({ id: "connections" }),
+      icon: <TeamOutlined className="mr-1" aria-hidden="true" />,
+    },
+    {
+      value: "PRIVATE",
+      label: intl.formatMessage({ id: "visibility.card.private" }),
+      icon: <EyeInvisibleOutlined className="mr-1" aria-hidden="true" />,
+    },
+  ];
+
   return (
     <>
-      <Select
-        value={status}
+      <CustomDropdown
+        inputValue={status}
         className="visibilitySelector"
-        style={{ width: 120 }}
-        onSelect={handleSelect}
-        aria-label={intl.formatMessage({ id: "visibility.selector" })}
-      >
-        <Option
-          value="PUBLIC"
-          aria-label={intl.formatMessage({ id: "visibility.card.public" })}
-        >
-          <EyeOutlined className="mr-1" aria-hidden="true" />
-          <FormattedMessage id="visibility.card.public" />
-        </Option>
-        <Option
-          value="CONNECTIONS"
-          aria-label={intl.formatMessage({ id: "connections" })}
-        >
-          <TeamOutlined className="mr-1" aria-hidden="true" />
-          <FormattedMessage id="connections" />
-        </Option>
-        <Option
-          value="PRIVATE"
-          aria-label={intl.formatMessage({ id: "visibility.card.private" })}
-        >
-          <EyeInvisibleOutlined className="mr-1" aria-hidden="true" />
-          <FormattedMessage id="visibility.card.private" />
-        </Option>
-      </Select>
-
+        isClearable={false}
+        options={generateOptions()}
+        onChange={handleSelect}
+        ariaLabel={`${ariaLabel} ${intl.formatMessage({
+          id: "visibility.selector",
+        })}`}
+        isSearchable={false}
+      />
       <AlertDialog
         title={<FormattedMessage id="visibility.card.title" />}
         body={<FormattedMessage id={`visibility.${type}.show.confirm`} />}
@@ -155,6 +158,7 @@ CardVisibilityToggleView.propTypes = {
   ).isRequired,
   cardName: PropTypes.string.isRequired,
   type: PropTypes.oneOf(["form", "card"]).isRequired,
+  ariaLabel: PropTypes.string.isRequired,
 };
 
 export default CardVisibilityToggleView;

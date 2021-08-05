@@ -650,6 +650,9 @@ const TalentFormView = ({
                         visibleCards={profileInfo.visibleCards}
                         cardName="skills"
                         type="form"
+                        ariaLabel={intl.formatMessage({
+                          id: "skills",
+                        })}
                       />
                     }
                   />
@@ -707,6 +710,9 @@ const TalentFormView = ({
                         visibleCards={profileInfo.visibleCards}
                         cardName="mentorshipSkills"
                         type="form"
+                        ariaLabel={intl.formatMessage({
+                          id: "mentorship.skills",
+                        })}
                       />
                     }
                   />
@@ -761,6 +767,9 @@ const TalentFormView = ({
                         visibleCards={profileInfo.visibleCards}
                         cardName="competencies"
                         type="form"
+                        ariaLabel={intl.formatMessage({
+                          id: "competencies",
+                        })}
                       />
                     }
                   />

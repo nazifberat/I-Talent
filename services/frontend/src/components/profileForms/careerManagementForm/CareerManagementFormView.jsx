@@ -473,6 +473,9 @@ const CareerManagementFormView = ({
                     visibleCards={profileInfo.visibleCards}
                     cardName="developmentalGoals"
                     type="form"
+                    ariaLabel={intl.formatMessage({
+                      id: "developmental.goals",
+                    })}
                   />
                 }
               />
@@ -559,6 +562,9 @@ const CareerManagementFormView = ({
                     visibleCards={profileInfo.visibleCards}
                     cardName="qualifiedPools"
                     type="form"
+                    ariaLabel={intl.formatMessage({
+                      id: "qualified.pools",
+                    })}
                   />
                 }
               />
@@ -641,6 +647,9 @@ const CareerManagementFormView = ({
                     visibleCards={profileInfo.visibleCards}
                     cardName="careerInterests"
                     type="form"
+                    ariaLabel={intl.formatMessage({
+                      id: "career.interests",
+                    })}
                   />
                 }
               />
@@ -750,6 +759,9 @@ const CareerManagementFormView = ({
                     visibleCards={profileInfo.visibleCards}
                     cardName="talentManagement"
                     type="form"
+                    ariaLabel={intl.formatMessage({
+                      id: "talent.management",
+                    })}
                   />
                 }
               />
@@ -812,6 +824,9 @@ const CareerManagementFormView = ({
                     visibleCards={profileInfo.visibleCards}
                     cardName="exFeeder"
                     type="form"
+                    ariaLabel={intl.formatMessage({
+                      id: "ex.feeder",
+                    })}
                   />
                 }
               />
